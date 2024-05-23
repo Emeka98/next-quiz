@@ -1,7 +1,8 @@
 "use client";
 import { Switch } from "@headlessui/react";
 import { useTheme } from "next-themes";
-import { MoonIcon, SunIcon } from "@radix-ui/react-icons";
+import { SunIcon } from "@radix-ui/react-icons";
+import { IoMoonOutline } from "react-icons/io5";
 
 import { useState } from "react";
 
@@ -15,9 +16,9 @@ function Toggle() {
   };
   return (
     <div className="flex items-center py-2  gap-2 justify-end mr-6">
-      <MoonIcon
+      <IoMoonOutline
         className={`${
-          isDarkMode && "bg-[#f4f6fa]"
+          isDarkMode && "text-[#f4f6fa]"
         } h-[1.5rem] w-[1.5rem]  m-1 rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100`}
       />
       <Switch
