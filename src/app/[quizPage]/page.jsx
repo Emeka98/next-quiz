@@ -30,6 +30,14 @@ export default function QuizPage() {
     return question;
   };
 
+  const shuffle = (array) => {
+    for (let i = array.length - 1; i > 0; i--) {
+      let j = Math.floor(Math.random() * (i + 1));
+      [array[i], array[j]] = [array[j], array[i]];
+    }
+    return array;
+  };
+
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [completedQuiz, SetCompletedQuiz] = useState(false);
   const [selectedAnswer, setSelectedAnswer] = useState(null);
@@ -37,6 +45,10 @@ export default function QuizPage() {
   const [score, setScore] = useState(0);
   const [correctAnswersCount, setCorrectAnswersCount] = useState(0);
   const questions = getQuestion(subjectId) || [];
+  const [currentQuestion, SetCurrentQuestion] = useState(questions[0]);
+  const [currentAnswers, SetCurrentAnswers] = useState(
+    shuffle(questions[0].answers)
+  );
 
   // ***********************Functions**************//
   const calcWidth = useMemo(() => {
@@ -72,26 +84,11 @@ export default function QuizPage() {
   if (!questions.length) {
     return <div>Loading...</div>;
   }
-  const shuffle = (array) => {
-    for (let i = array.length - 1; i > 0; i--) {
-      let j = Math.floor(Math.random() * (i + 1));
-      [array[i], array[j]] = [array[j], array[i]];
-    }
-    return array;
-  };
 
-  const question = () => {
-    return questions[currentQuestionIndex];
-  };
-  const answers = () => {
-    return shuffle(questions[currentQuestionIndex].answers);
-  };
-  const currentQuestion = useMemo(() => {
-    return question();
-  }, [currentQuestionIndex]);
-  const currentAnswers = useMemo(() => {
-    return answers();
-  }, [currentQuestion]);
+  useEffect(() => {
+    SetCurrentQuestion(questions[currentQuestionIndex]);
+    SetCurrentAnswers(questions[currentQuestionIndex].answers);
+  }, [currentQuestionIndex, currentAnswers]);
 
   return (
     <section>
