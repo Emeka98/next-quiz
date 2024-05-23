@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 
 const subjects = [
@@ -35,11 +36,7 @@ export default function Home() {
             >
               <li className="flex flex-row justify-start m-0 p-0 gap-4 w-full align-middle  text-center py-auto rounded-md">
                 <span className="bg-[#f4f6fa] p-2 rounded-md ml-0">
-                  <img
-                    src={subject.img}
-                    className="w-[50px] h-[50px] "
-                    alt="icon"
-                  />
+                  <Image src={subject.img} width={50} height={50} alt="icon" />
                 </span>
                 <Link
                   className="w-full text-left text-[24px] flex justify-start py-3 lg:py-auto xl:p-auto align-middle"

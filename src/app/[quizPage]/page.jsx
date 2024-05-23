@@ -6,6 +6,7 @@ import { CiCircleCheck } from "react-icons/ci";
 import { MdOutlineCancel } from "react-icons/md";
 import { useRouter, useSearchParams } from "next/navigation";
 import { javascript, html, css, accessibility } from "../data/quiz-data";
+import Image from "next/image";
 
 export default function QuizPage() {
   const router = useRouter();
@@ -44,11 +45,23 @@ export default function QuizPage() {
   const [isAnswered, setIsAnswered] = useState(false);
   const [score, setScore] = useState(0);
   const [correctAnswersCount, setCorrectAnswersCount] = useState(0);
-  const questions = getQuestion(subjectId) || [];
-  const [currentQuestion, SetCurrentQuestion] = useState(questions[0]);
-  const [currentAnswers, SetCurrentAnswers] = useState(
-    shuffle(questions[0].answers)
+  const questions = useMemo(() => {
+    return getQuestion(subjectId) || [];
+  }, [subjectId]);
+
+  const [currentQuestion, SetCurrentQuestion] = useState(
+    questions[currentQuestionIndex]
   );
+  const [currentAnswers, SetCurrentAnswers] = useState(
+    questions[currentQuestionIndex].answers
+  );
+
+  useEffect(() => {
+    SetCurrentQuestion(questions[currentQuestionIndex]);
+  }, [currentQuestionIndex, questions]);
+  useEffect(() => {
+    SetCurrentAnswers(shuffle(currentQuestion.answers));
+  }, [currentQuestionIndex, questions, currentQuestion]);
 
   // ***********************Functions**************//
   const calcWidth = useMemo(() => {
@@ -84,12 +97,6 @@ export default function QuizPage() {
   if (!questions.length) {
     return <div>Loading...</div>;
   }
-
-  useEffect(() => {
-    SetCurrentQuestion(questions[currentQuestionIndex]);
-    SetCurrentAnswers(questions[currentQuestionIndex].answers);
-  }, [currentQuestionIndex, currentAnswers]);
-
   return (
     <section>
       {completedQuiz ? (
@@ -105,7 +112,7 @@ export default function QuizPage() {
             {/* navigation bar */}
             <div className="flex flex-row gap-4    md:text-left md:flex md:gap-3 md:mx-auto md:justify-start mx-auto xl:w-full mt-0 xl:mt-0 xl:ml-0 xl:text-left text-center md:w-[80%] md:mt-0   lg:max-2xl:text-left lg:max-2xl:px-8 lg:max-2xltext-[48px] lg:max-2xl:w-[30%] lg:mb-0">
               <span className="flex bg-[#f4f6fa] rounded-md lg:p-2 xl:w-[40px] xl:h-[40px] align-middle my-auto  items-center">
-                <img src={imgUrl} alt="icon" />
+                <Image src={imgUrl} alt="icon" width={50} height={50} />
               </span>
               <h1 className="xl:text-[44px] text-center xl:w-[90%] xl:text-left font-semibold md:w-1/2 md:ml-3 text-[28px] mt-0 md:text-left">
                 {subject}
