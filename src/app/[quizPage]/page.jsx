@@ -79,11 +79,18 @@ export default function QuizPage() {
     }
     return array;
   };
-  const currentQuestion = useMemo(() => {
+
+  const question = () => {
     return questions[currentQuestionIndex];
+  };
+  const answers = () => {
+    return shuffle(questions[currentQuestionIndex].answers);
+  };
+  const currentQuestion = useMemo(() => {
+    return question();
   }, [currentQuestionIndex]);
   const currentAnswers = useMemo(() => {
-    return shuffle(currentQuestion.answers);
+    return answers();
   }, [currentQuestion]);
 
   return (
